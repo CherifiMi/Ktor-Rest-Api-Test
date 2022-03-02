@@ -28,6 +28,7 @@ dependencies {
     implementation("io.ktor:ktor-gson:$ktor_version")
 
     //MongoDB
-    implementation("org.litote.kmongo:kmongo-coroutine:4.2.8")
+    implementation("org.litote.kmongo:kmongo-coroutine:4.5.0")
+
 
 }

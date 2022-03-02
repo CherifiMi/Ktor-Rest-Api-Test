@@ -7,47 +7,33 @@ import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.response.*
 import io.ktor.request.*
+import org.litote.kmongo.coroutine.CoroutineCollection
 
-//-------------values
-val users = mutableListOf<User>()
 
-fun Application.configureRouting() {
+//val users = mutableListOf<User>()
+
+
+fun Application.configureRouting(collection: CoroutineCollection<User>) {
+    install(ContentNegotiation) {
+        gson()
+    }
+
     routing {
-        install(ContentNegotiation) {
-            gson()
-        }
-        getAllUsers()
-        user()
-    }
-}
-fun Routing.user() {
-    route("/user"){
 
-        post{
+        get("/"){
+            call.respond("HILLO")
+        }
+
+        get("/users") {
+            val users = collection.find().toList()
+            call.respond(users)
+        }
+
+        post("/user") {
+            call.parameters
             val requestBody = call.receive<User>()
-            val user = requestBody.copy(id = users.size.plus(1))
-            users.add(user)
-            call.respond(user)
+            val isSuccess = collection.insertOne(requestBody).wasAcknowledged()
+            call.respond(isSuccess)
         }
-
-        get{
-            val id = call.request.queryParameters["id"]
-            val user = users.find { it.id == id?.toInt() }
-            val response = user ?: "User not found"
-            call.respond(response)
-        }
-
-        delete{
-            val id = call.request.queryParameters["id"]
-            users.removeIf{
-                it.id == id?.toInt()
-            }
-            call.respond("User was deleted")
-        }
-    }
-}
-fun Routing.getAllUsers(){
-    get("/users") {
-        call.respond(users)
     }
 }
