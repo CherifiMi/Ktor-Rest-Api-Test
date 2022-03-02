@@ -33,7 +33,14 @@ fun Application.configureRouting() {
             val user = users.find { it.id == id?.toInt() }
             val response = user ?: "User not found"
             call.respond(response)
+        }
 
+        delete("/user") {
+            val id = call.request.queryParameters["id"]
+            users.removeIf{
+                it.id == id?.toInt()
+            }
+            call.respond("User was deleted")
         }
     }
 }
