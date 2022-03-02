@@ -12,21 +12,28 @@ fun Application.configureRouting() {
     //-------------values
     val users = mutableListOf<User>()
 
-
-
-
     routing {
         get("/") {
             call.respondText("Hello World!")
         }
-        get("/mito") {
+
+        get("/users") {
             call.respond(users)
         }
+
         post("/user") {
             val requestBody = call.receive<User>()
             val user = requestBody.copy(id = users.size.plus(1))
             users.add(user)
             call.respond(user)
+        }
+
+        get("/user") {
+            val id = call.request.queryParameters["id"]
+            val user = users.find { it.id == id?.toInt() }
+            val response = user ?: "User not found"
+            call.respond(response)
+
         }
     }
 }
