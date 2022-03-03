@@ -23,12 +23,14 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    implementation("io.ktor:ktor-serialization:$ktor_version")
 
     //gson
     implementation("io.ktor:ktor-gson:$ktor_version")
 
-    //MongoDB
-    implementation("org.litote.kmongo:kmongo-coroutine:4.5.0")
+    // KMongo
+    implementation("org.litote.kmongo:kmongo:4.4.0")
+    implementation("org.litote.kmongo:kmongo-coroutine:4.4.0")
 
 
 }

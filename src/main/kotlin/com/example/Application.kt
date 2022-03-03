@@ -10,13 +10,14 @@ import io.ktor.gson.*
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
+val client = KMongo.createClient().coroutine
+val database = client.getDatabase("users_db2")
+val collection = database.getCollection<User>()
+
 fun main() {
 
-    val client = KMongo.createClient().coroutine
-    val database = client.getDatabase("users_db")
-    val col = database.getCollection<User>()
-
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
-        configureRouting(col)
+    embeddedServer(Netty, port = 8082, host = "0.0.0.0") {
+        configureRouting(collection)
+        configureSerialization()
     }.start(wait = true)
 }

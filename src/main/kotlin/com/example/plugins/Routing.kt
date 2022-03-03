@@ -7,28 +7,23 @@ import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.response.*
 import io.ktor.request.*
+import org.bson.codecs.pojo.annotations.BsonId
 import org.litote.kmongo.coroutine.CoroutineCollection
 
 
-//val users = mutableListOf<User>()
-
-
 fun Application.configureRouting(collection: CoroutineCollection<User>) {
-    install(ContentNegotiation) {
-        gson()
-    }
 
     routing {
 
-        get("/"){
-            call.respond("HILLO")
+        install(ContentNegotiation) {
+            gson()
         }
-
+        get("/") {
+            call.respondText("Hello World!")
+        }
         get("/users") {
-            val users = collection.find().toList()
-            call.respond(users)
+            call.respond(collection.find().toList())
         }
-
         post("/user") {
             call.parameters
             val requestBody = call.receive<User>()
