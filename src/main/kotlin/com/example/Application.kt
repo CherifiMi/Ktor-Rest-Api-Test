@@ -16,7 +16,7 @@ val collection = database.getCollection<User>()
 
 fun main() {
 
-    embeddedServer(Netty, port = 8082, host = "0.0.0.0") {
+    embeddedServer(Netty, port = System.getenv("PORT").toInt(), host = "0.0.0.0") {
         configureRouting(collection)
         configureSerialization()
     }.start(wait = true)
